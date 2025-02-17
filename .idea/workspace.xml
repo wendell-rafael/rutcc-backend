@@ -5,13 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="84a8c463-69aa-4548-9637-e84bae1a2789" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/models/favorito.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/routers/favorito.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/schemas/favorito.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gerar_token.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/reset_db.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/routers/cardapio.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/cardapio.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -113,7 +107,8 @@
       <workItem from="1739654096587" duration="2260000" />
       <workItem from="1739734895316" duration="731000" />
       <workItem from="1739735900682" duration="6672000" />
-      <workItem from="1739742877768" duration="2065000" />
+      <workItem from="1739742877768" duration="2500000" />
+      <workItem from="1739798230847" duration="3665000" />
     </task>
     <servers />
   </component>
@@ -133,6 +128,6 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/rutcc$gerar_token.coverage" NAME="gerar_token Coverage Results" MODIFIED="1739741579032" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app" />
-    <SUITE FILE_PATH="coverage/rutcc$reset_db.coverage" NAME="reset_db Coverage Results" MODIFIED="1739744811689" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/rutcc$reset_db.coverage" NAME="reset_db Coverage Results" MODIFIED="1739800194737" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

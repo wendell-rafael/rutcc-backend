@@ -13,6 +13,7 @@ from firebase_admin import auth
 router = APIRouter()
 security = HTTPBearer()
 
+
 # ============================
 # ✅ Função para obter o banco
 # ============================
@@ -23,6 +24,7 @@ def get_db():
     finally:
         db.close()
 
+
 # ============================
 # ✅ Verificação do Token
 # ============================
@@ -32,6 +34,7 @@ def verify_firebase_token(credentials: HTTPAuthorizationCredentials = Security(s
         return decoded_token
     except Exception:
         raise HTTPException(status_code=401, detail="Token inválido ou expirado")
+
 
 # ============================
 # ✅ GET /cardapios/ (Ordenado)
@@ -48,6 +51,7 @@ def get_cardapios(db: Session = Depends(get_db)):
         .order_by(Cardapio.dia.asc(), refeicao_order.asc())
         .all()
     )
+
 
 # ============================
 # ✅ POST /cardapios/import (Público)
@@ -94,6 +98,7 @@ def import_cardapios(nome_cardapio: str, db: Session = Depends(get_db)):
         logging.error(f"🚨 Erro ao salvar no banco: {e}")
         raise HTTPException(status_code=500, detail=f"Erro ao salvar no banco: {str(e)}")
 
+
 # ============================
 # ✅ GET /cardapios/{id}
 # ============================
@@ -104,16 +109,18 @@ def get_cardapio(id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Cardápio não encontrado")
     return cardapio
 
+
 # ============================
 # ✅ POST /cardapios/ (Protegido)
 # ============================
-@router.post("/", response_model=CardapioSchema)
+@router.post("/", response_model=CardapioSchema, status_code=201)
 def create_cardapio(cardapio: CardapioSchema, user=Depends(verify_firebase_token), db: Session = Depends(get_db)):
     new_cardapio = Cardapio(**cardapio.dict())
     db.add(new_cardapio)
     db.commit()
     db.refresh(new_cardapio)
     return new_cardapio
+
 
 # ============================
 # ✅ PUT /cardapios/{id} (Protegido)
@@ -130,6 +137,7 @@ def update_cardapio(id: int, cardapio: CardapioSchema, user=Depends(verify_fireb
     db.refresh(existing_cardapio)
     return existing_cardapio
 
+
 # ============================
 # ✅ PATCH /cardapios/{id} (Protegido)
 # ============================
@@ -143,6 +151,7 @@ def patch_cardapio(id: int, cardapio: dict, user=Depends(verify_firebase_token),
     db.commit()
     db.refresh(existing_cardapio)
     return existing_cardapio
+
 
 # ============================
 # ✅ DELETE /cardapios/{id} (Protegido)
