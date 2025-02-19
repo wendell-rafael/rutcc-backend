@@ -10,13 +10,14 @@ from app.utils.firebase_utils import download_csv_from_storage
 from app.utils.csv_parser import parse_cardapio_csv
 from firebase_admin import auth
 
+from app.utils.notifications import send_menu_update_notification
+
+# Importe a função de notificação
+
 router = APIRouter()
 security = HTTPBearer()
 
 
-# ============================
-# ✅ Função para obter o banco
-# ============================
 def get_db():
     db = SessionLocal()
     try:
@@ -25,9 +26,6 @@ def get_db():
         db.close()
 
 
-# ============================
-# ✅ Verificação do Token
-# ============================
 def verify_firebase_token(credentials: HTTPAuthorizationCredentials = Security(security)):
     try:
         decoded_token = auth.verify_id_token(credentials.credentials)
@@ -36,9 +34,6 @@ def verify_firebase_token(credentials: HTTPAuthorizationCredentials = Security(s
         raise HTTPException(status_code=401, detail="Token inválido ou expirado")
 
 
-# ============================
-# ✅ GET /cardapios/ (Ordenado)
-# ============================
 @router.get("/", response_model=list[CardapioSchema])
 def get_cardapios(db: Session = Depends(get_db)):
     refeicao_order = case(
@@ -53,9 +48,6 @@ def get_cardapios(db: Session = Depends(get_db)):
     )
 
 
-# ============================
-# ✅ POST /cardapios/import (Público)
-# ============================
 @router.post("/import", response_model=dict)
 def import_cardapios(nome_cardapio: str, db: Session = Depends(get_db)):
     file_path = f"uploads/csv/{nome_cardapio}"
@@ -92,6 +84,13 @@ def import_cardapios(nome_cardapio: str, db: Session = Depends(get_db)):
             )
             db.add(cardapio)
         db.commit()
+
+        # Envia notificação de atualização
+        try:
+            send_menu_update_notification()
+        except Exception as notif_error:
+            logging.error(f"🚨 Erro ao enviar notificação: {notif_error}")
+
         logging.info("✅ Cardápios importados com sucesso.")
         return {"message": f"Cardápio '{nome_cardapio}' importado com sucesso"}
     except Exception as e:
@@ -99,32 +98,21 @@ def import_cardapios(nome_cardapio: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=500, detail=f"Erro ao salvar no banco: {str(e)}")
 
 
-# ============================
-# ✅ GET /cardapios/{id}
-# ============================
-@router.get("/{id}", response_model=CardapioSchema)
-def get_cardapio(id: int, db: Session = Depends(get_db)):
-    cardapio = db.query(Cardapio).filter(Cardapio.id == id).first()
-    if not cardapio:
-        raise HTTPException(status_code=404, detail="Cardápio não encontrado")
-    return cardapio
-
-
-# ============================
-# ✅ POST /cardapios/ (Protegido)
-# ============================
 @router.post("/", response_model=CardapioSchema, status_code=201)
 def create_cardapio(cardapio: CardapioSchema, user=Depends(verify_firebase_token), db: Session = Depends(get_db)):
     new_cardapio = Cardapio(**cardapio.dict())
     db.add(new_cardapio)
     db.commit()
     db.refresh(new_cardapio)
+
+    try:
+        send_menu_update_notification()
+    except Exception as notif_error:
+        logging.error(f"🚨 Erro ao enviar notificação: {notif_error}")
+
     return new_cardapio
 
 
-# ============================
-# ✅ PUT /cardapios/{id} (Protegido)
-# ============================
 @router.put("/{id}", response_model=CardapioSchema)
 def update_cardapio(id: int, cardapio: CardapioSchema, user=Depends(verify_firebase_token),
                     db: Session = Depends(get_db)):
@@ -135,12 +123,15 @@ def update_cardapio(id: int, cardapio: CardapioSchema, user=Depends(verify_fireb
         setattr(existing_cardapio, key, value)
     db.commit()
     db.refresh(existing_cardapio)
+
+    try:
+        send_menu_update_notification()
+    except Exception as notif_error:
+        logging.error(f"🚨 Erro ao enviar notificação: {notif_error}")
+
     return existing_cardapio
 
 
-# ============================
-# ✅ PATCH /cardapios/{id} (Protegido)
-# ============================
 @router.patch("/{id}", response_model=CardapioSchema)
 def patch_cardapio(id: int, cardapio: dict, user=Depends(verify_firebase_token), db: Session = Depends(get_db)):
     existing_cardapio = db.query(Cardapio).filter(Cardapio.id == id).first()
@@ -150,12 +141,15 @@ def patch_cardapio(id: int, cardapio: dict, user=Depends(verify_firebase_token),
         setattr(existing_cardapio, key, value)
     db.commit()
     db.refresh(existing_cardapio)
+
+    try:
+        send_menu_update_notification()
+    except Exception as notif_error:
+        logging.error(f"🚨 Erro ao enviar notificação: {notif_error}")
+
     return existing_cardapio
 
 
-# ============================
-# ✅ DELETE /cardapios/{id} (Protegido)
-# ============================
 @router.delete("/{id}", response_model=dict)
 def delete_cardapio(id: int, user=Depends(verify_firebase_token), db: Session = Depends(get_db)):
     cardapio = db.query(Cardapio).filter(Cardapio.id == id).first()
@@ -163,4 +157,10 @@ def delete_cardapio(id: int, user=Depends(verify_firebase_token), db: Session = 
         raise HTTPException(status_code=404, detail="Cardápio não encontrado")
     db.delete(cardapio)
     db.commit()
+
+    try:
+        send_menu_update_notification()
+    except Exception as notif_error:
+        logging.error(f"🚨 Erro ao enviar notificação: {notif_error}")
+
     return {"message": "Cardápio removido com sucesso"}

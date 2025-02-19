@@ -5,8 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="84a8c463-69aa-4548-9637-e84bae1a2789" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/app/models/avaliacao.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/models/checkin.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/routers/avaliacao.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/routers/checkin.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/schemas/avaliacao.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/schemas/checkin.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/utils/notifications.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/favorito.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/favorito.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/routers/cardapio.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/cardapio.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routers/favorito.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/favorito.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/schemas/favorito.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/favorito.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -108,7 +118,13 @@
       <workItem from="1739734895316" duration="731000" />
       <workItem from="1739735900682" duration="6672000" />
       <workItem from="1739742877768" duration="2500000" />
-      <workItem from="1739798230847" duration="3665000" />
+      <workItem from="1739798230847" duration="3830000" />
+      <workItem from="1739813039217" duration="3752000" />
+      <workItem from="1739819242839" duration="2834000" />
+      <workItem from="1739822374747" duration="1717000" />
+      <workItem from="1739824462314" duration="800000" />
+      <workItem from="1739837429599" duration="3832000" />
+      <workItem from="1739992009467" duration="3771000" />
     </task>
     <servers />
   </component>

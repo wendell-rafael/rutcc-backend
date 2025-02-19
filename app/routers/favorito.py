@@ -1,11 +1,14 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Response
 from sqlalchemy.orm import Session
 from app.database import SessionLocal
 from app.models.favorito import Favorito
+from app.schemas.favorito import FavoritoResponse
+import json
 
 router = APIRouter()
 
 
+# Função para obter a sessão do banco
 def get_db():
     db = SessionLocal()
     try:
@@ -14,21 +17,31 @@ def get_db():
         db.close()
 
 
-@router.post("/", response_model=dict)
+# Adicionar um favorito
+@router.post("/", response_model=FavoritoResponse)
 def add_favorito(usuario_id: str, prato: str, db: Session = Depends(get_db)):
+    # Verifique se o favorito já existe
+    existing_favorito = db.query(Favorito).filter(Favorito.usuario_id == usuario_id, Favorito.prato == prato).first()
+    if existing_favorito:
+        raise HTTPException(status_code=400, detail="Este prato já está nos favoritos")
+
     favorito = Favorito(usuario_id=usuario_id, prato=prato)
     db.add(favorito)
     db.commit()
     db.refresh(favorito)
-    return {"message": "Favorito adicionado com sucesso"}
+    return favorito  # Retorna o favorito recém-criado
 
 
-@router.get("/{usuario_id}", response_model=list)
+# Listar todos os favoritos de um usuário
+@router.get("/{usuario_id}", response_model=list[FavoritoResponse])
 def get_favoritos(usuario_id: str, db: Session = Depends(get_db)):
     favoritos = db.query(Favorito).filter(Favorito.usuario_id == usuario_id).all()
-    return favoritos
+    if not favoritos:
+        raise HTTPException(status_code=404, detail="Nenhum favorito encontrado para este usuário")
+    # Força a serialização usando o modelo Pydantic
+    return [FavoritoResponse.from_orm(fav).dict() for fav in favoritos]
 
-
+# Remover um favorito
 @router.delete("/{id}", response_model=dict)
 def remove_favorito(id: int, db: Session = Depends(get_db)):
     favorito = db.query(Favorito).filter(Favorito.id == id).first()
@@ -37,7 +50,3 @@ def remove_favorito(id: int, db: Session = Depends(get_db)):
     db.delete(favorito)
     db.commit()
     return {"message": "Favorito removido com sucesso"}
-
-# Lógica de monitoramento (a ser implementada):
-# - Uma função que roda diariamente, busca o cardápio do dia e compara com os pratos favoritos de cada usuário.
-# - Se houver correspondência, envia notificação via Firebase Cloud Messaging.

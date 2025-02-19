@@ -7,8 +7,12 @@ Base = declarative_base()
 
 
 class Favorito(Base):
-    __tablename__ = "favoritos"
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    usuario_id = Column(String, nullable=False)
+    __tablename__ = 'favoritos'  # Nome da tabela no banco de dados
+
+    id = Column(Integer, primary_key=True, index=True)
+    usuario_id = Column(String, nullable=False)  # Alterado para String para aceitar o UID
     prato = Column(String, nullable=False)
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    created_at = Column(DateTime, server_default=func.now())
+
+    def __repr__(self):
+        return f"<Favorito(id={self.id}, usuario_id={self.usuario_id}, prato={self.prato})>"

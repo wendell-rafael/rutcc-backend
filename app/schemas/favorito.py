@@ -1,15 +1,13 @@
 from pydantic import BaseModel
 from datetime import datetime
 
-class FavoritoSchema(BaseModel):
-    id: int
+class FavoritoBase(BaseModel):
     usuario_id: str
     prato: str
+
+class FavoritoResponse(FavoritoBase):
+    id: int
     created_at: datetime
 
     class Config:
-        from_attributes = True  # Para compatibilidade com o SQLAlchemy
-
-class FavoritoCreate(BaseModel):
-    usuario_id: str
-    prato: str
+        from_attributes = True  # Atualizado para Pydantic V2
