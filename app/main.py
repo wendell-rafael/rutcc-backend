@@ -4,9 +4,10 @@ from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Depends, Security
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from app.routers import cardapio, favorito,notification
-from app.database import engine
-from app.models.cardapio import Base  # Já existente
-
+from app.database import engine, Base
+from app.models.cardapio import Cardapio
+from app.models.checkin import Checkin
+from app.models.favorito import Favorito
 from fastapi.middleware.cors import CORSMiddleware
 from firebase_admin import credentials, auth, initialize_app
 import json
