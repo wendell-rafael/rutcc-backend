@@ -3,8 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql import func
 from sqlalchemy.dialects.postgresql import ENUM
 
-Base = declarative_base()
-
+from app.database import Base
 refeicao_tipo = ENUM('Almoço', 'Jantar', name='refeicao_tipo', create_type=True)
 
 class Cardapio(Base):

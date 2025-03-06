@@ -36,10 +36,9 @@ def add_favorito(usuario_id: str, prato: str, db: Session = Depends(get_db)):
 @router.get("/{usuario_id}", response_model=list[FavoritoResponse])
 def get_favoritos(usuario_id: str, db: Session = Depends(get_db)):
     favoritos = db.query(Favorito).filter(Favorito.usuario_id == usuario_id).all()
-    if not favoritos:
-        raise HTTPException(status_code=404, detail="Nenhum favorito encontrado para este usuário")
-    # Força a serialização usando o modelo Pydantic
+    # Em vez de lançar HTTPException(404) quando não há favoritos, retorna uma lista vazia.
     return [FavoritoResponse.from_orm(fav).dict() for fav in favoritos]
+
 
 # Remover um favorito
 @router.delete("/{id}", response_model=dict)

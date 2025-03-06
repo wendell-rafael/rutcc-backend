@@ -3,7 +3,7 @@ from sqlalchemy.orm import declarative_base
 from sqlalchemy import Column, Integer, String, DateTime, UniqueConstraint
 from sqlalchemy.sql import func
 
-Base = declarative_base()
+from app.database import Base
 
 
 class Favorito(Base):
