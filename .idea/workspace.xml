@@ -5,9 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="84a8c463-69aa-4548-9637-e84bae1a2789" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/routers/notification.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -124,7 +124,7 @@
       <workItem from="1740579038705" duration="587000" />
       <workItem from="1740596905129" duration="2708000" />
       <workItem from="1740685040346" duration="1462000" />
-      <workItem from="1741297428940" duration="670000" />
+      <workItem from="1741297428940" duration="1300000" />
     </task>
     <servers />
   </component>
