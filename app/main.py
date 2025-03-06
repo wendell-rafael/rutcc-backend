@@ -3,9 +3,10 @@ import os
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Depends, Security
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from app.routers import cardapio, favorito
+from app.routers import cardapio, favorito,notification
 from app.database import engine
-from app.models.cardapio import Base
+from app.models.cardapio import Base  # Já existente
+
 from fastapi.middleware.cors import CORSMiddleware
 from firebase_admin import credentials, auth, initialize_app
 import json
@@ -39,6 +40,8 @@ app = FastAPI(title="Cardápio API")
 # Inclui os routers
 app.include_router(cardapio.router, prefix="/cardapios", tags=["Cardápios"])
 app.include_router(favorito.router, prefix="/favoritos", tags=["Favoritos"])
+
+app.include_router(notification.router, prefix="/notificacoes", tags=["Notificações"])
 
 # Configura CORS
 app.add_middleware(
