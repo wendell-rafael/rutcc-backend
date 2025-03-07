@@ -1,0 +1,42 @@
+services:
+  server:
+    image: rufcg:latest
+    ports:
+      - "80:80"
+    volumes:
+      - app:/rufcg
+      - ./pwd.json:/rufcg/credentials.json
+    networks:
+      - rufcg-net
+    environment:
+      - DATABASE_URL=
+      - FIREBASE_SERVICE_ACCOUNT=credentials.json
+      - FIREBASE_STORAGE_BUCKET=
+
+  db:
+    image: postgres:16.4-alpine3.20
+    container_name: dev-usync-db
+    ports:
+      - "127.0.0.1:5000:5432"
+    volumes:
+      - db:/var/lib/postgresql/data
+    environment:
+      - PGDATA=/var/lib/postgresql/data/pgdata
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      - rufcg-net
+    
+
+volumes:
+  app:
+    name: rufcg-app
+  db:
+    name: rufcg-db
+
+networks:
+  rufcg-net:
+    name: rufcg-net
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.0.0/28
